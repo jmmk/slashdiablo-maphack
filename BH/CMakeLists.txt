@@ -49,6 +49,26 @@ set(DRAWING_SOURCES "Drawing/Hook.cpp"
                     "Drawing/UI/UITab.cpp")
 
 set(SOURCE_FILES ${SOURCE_FILES} ${MODULE_SOURCES} ${DRAWING_SOURCES})
+
 add_library(BH ${SOURCE_FILES})
-target_include_directories(BH PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/cpp-lru-cache/include)
-target_link_libraries(BH ${STORM_LIBRARY} Shlwapi)
+target_link_libraries(BH PRIVATE ${STORM_LIBRARY} Shlwapi)
+
+## External Dependencies
+include(ExternalProject)
+
+set(THIRDPARTY_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty)
+
+# cpp-lru-cache
+ExternalProject_Add(
+    cpp-lru-cache
+    PREFIX ${THIRDPARTY_LIBS}
+    GIT_REPOSITORY https://github.com/lamerman/cpp-lru-cache.git
+    GIT_TAG de1c4a03569bf3bd540e7f55ab5c2961411dbe22
+    # Header-only dependency. Skip Build
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+    CONFIGURE_COMMAND ""
+    TEST_COMMAND ""
+)
+add_dependencies(BH cpp-lru-cache)
+target_include_directories(BH PRIVATE ${THIRDPARTY_LIBS}/src/cpp-lru-cache/include)

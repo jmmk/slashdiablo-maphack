@@ -37,3 +37,5 @@ BH/Release/*
 Release/*
 /.vs/BH/v15
 /BH.VC.db
+Thirdparty
+!ThirdParty/StormLib.*
